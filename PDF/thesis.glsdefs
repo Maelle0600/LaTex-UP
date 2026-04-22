@@ -1,0 +1,196 @@
+\glsdefs@newdocentry{PKI}%
+{%
+name={\acronymfont {\glsentryshort {PKI}}},%
+sort={PKI},%
+type={acronym},%
+first={PKI},%
+firstplural={PKIs},%
+text={PKI},%
+plural={PKIs},%
+description={Public-Key-Infrasturktur},%
+descriptionplural={Public-Key-Infrasturktur},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Public-Key-Infrasturktur},%
+longplural={Public-Key-Infrasturkturen},%
+short={PKI},%
+shortplural={PKIs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{IDM}%
+{%
+name={\acronymfont {\glsentryshort {IDM}}},%
+sort={IDM},%
+type={acronym},%
+first={IDM},%
+firstplural={IDMs},%
+text={IDM},%
+plural={IDMs},%
+description={Identity-Management},%
+descriptionplural={Identity-Management},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Identity-Management},%
+longplural={Identity-Managements},%
+short={IDM},%
+shortplural={IDMs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{ESB}%
+{%
+name={\acronymfont {\glsentryshort {ESB}}},%
+sort={ESB},%
+type={acronym},%
+first={ESB},%
+firstplural={ESBs},%
+text={ESB},%
+plural={ESBs},%
+description={Enterprise-Service-Bus},%
+descriptionplural={Enterprise-Service-Bus},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Enterprise-Service-Bus},%
+longplural={Enterprise-Service-Buss},%
+short={ESB},%
+shortplural={ESBs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{ID}%
+{%
+name={\acronymfont {\glsentryshort {ID}}},%
+sort={ID},%
+type={acronym},%
+first={ID},%
+firstplural={IDs},%
+text={ID},%
+plural={IDs},%
+description={Identifikator},%
+descriptionplural={Identifikator},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Identifikator},%
+longplural={Identifikators},%
+short={ID},%
+shortplural={IDs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{SigG}%
+{%
+name={\acronymfont {\glsentryshort {SigG}}},%
+sort={SigG},%
+type={acronym},%
+first={SigG},%
+firstplural={SigGs},%
+text={SigG},%
+plural={SigGs},%
+description={Signaturgesetz},%
+descriptionplural={Signaturgesetz},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Signaturgesetz},%
+longplural={Signaturgesetzs},%
+short={SigG},%
+shortplural={SigGs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{CCC}%
+{%
+name={\acronymfont {\glsentryshort {CCC}}},%
+sort={CCC},%
+type={acronym},%
+first={CCC},%
+firstplural={CCCs},%
+text={CCC},%
+plural={CCCs},%
+description={Chaos Computer Club e. V.},%
+descriptionplural={Chaos Computer Club e. V.},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Chaos Computer Club e. V.},%
+longplural={Chaos Computer Club e. V.s},%
+short={CCC},%
+shortplural={CCCs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{BSI}%
+{%
+name={\acronymfont {\glsentryshort {BSI}}},%
+sort={BSI},%
+type={acronym},%
+first={BSI},%
+firstplural={BSIs},%
+text={BSI},%
+plural={BSIs},%
+description={Bundesamt für Sicherheit in der Informationstechnik},%
+descriptionplural={Bundesamt für Sicherheit in der Informationstechnik},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Bundesamt für Sicherheit in der Informationstechnik},%
+longplural={Bundesamt für Sicherheit in der Informationstechniks},%
+short={BSI},%
+shortplural={BSIs},%
+counter={page},%
+parent={},%
+%
+}%
+
