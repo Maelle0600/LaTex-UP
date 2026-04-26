@@ -13,6 +13,7 @@
 % Einstellungen
 \pdfminorversion=6
 \documentclass[
+  oneside,
   paper=A4, 		% Stellt auf A4-Papier ein
   pagesize, 		% Diese Option reicht die Papiergröße an alle Ausgabeformate weiter
   DIV=calc, 		% Für einen guten Satzspiegel
@@ -22,7 +23,6 @@
   listof=totoc, 
   bibliography=totoc, 
   index=totoc, 
-  BCOR=5mm, 			% Formatregeln für Bindung
 ]{scrbook}
 % ---------------------------------------------------------------
 % Unverzichtbare Pakte
@@ -31,9 +31,12 @@
 % \usepackage{fixltx2e}  		% Verbessert einige Kernkompetenzen von LaTeX2e
 \usepackage{natbib} 
 \usepackage{graphicx} 		% Einfügen von Grafiken (.png)
-\usepackage[acronym,toc,nomain,nonumberlist,nopostdot]{glossaries}
-% Glossar-Befehle anschalten
-% \makeglossaries
+
+\usepackage[acronym,toc,nonumberlist,nopostdot]{glossaries}
+\makenoidxglossaries 
+\loadglsentries{./etc/acronym}
+% \glsaddall
+
 % \usepackage[hyphens]{url} 	% URL's schöner formatieren
 % \usepackage[pdftex,a4paper,breaklinks,bookmarksnumbered]{hyperref}  % Hyperlinks im PDF-Dokument
 %\usepackage{pdfpages} 		% Einfügen von PDF-Dateien
@@ -76,9 +79,6 @@
 % Den Punkt am Ende jeder Beschreibung deaktivieren
 \renewcommand*{\glspostdescription}{}
 
-\loadglsentries{./etc/acronym}
-\makenoidxglossaries
-\renewcommand{\glossarysection}[2][]{}
 % ---------------------------------------------------------------
 
 % Hier startet der Inhalt
@@ -87,19 +87,12 @@
 \input{./etc/pdf-info}
 % Titelblätter und Erklärung
 \frontmatter
-\pagenumbering{arabic}
 \include{./intro/titel} 
 
 % Erklärung (Arbeit selbstständig verfasst)
 \include{./intro/erklaerung}  
 
 % ---------------------------------------------------------------
-% Akronyme
-% \include{./etc/acronym}
-% \glsaddall
-% \printglossary[type=\acronymtype, title=List of Acronyms]
-\printnoidxglossary[type=\acronymtype, title=List of Acronyms]
-
 % % Glossar
 % \include{./etc/glossary}
 % ---------------------------------------------------------------
@@ -125,6 +118,10 @@
 % Hauptteil - Arabische Seitennummerierung
 \mainmatter % die eigentliche Arbeit
 \pagenumbering{arabic}
+% Akronyme
+% \include{./etc/acronym}
+\printnoidxglossary[type=\acronymtype, title=List of Acronyms]
+
 
 \input{./sections/1-Einleitung}
 \input{./sections/2-Second}
