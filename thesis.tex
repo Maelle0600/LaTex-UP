@@ -32,11 +32,16 @@
 \usepackage{natbib} 
 \usepackage{graphicx} 		% Einfügen von Grafiken (.png)
 
-\usepackage[acronym,toc,nonumberlist,nopostdot]{glossaries}
+\usepackage[acronym,toc,nonumberlist,nopostdot]{glossaries-extra}
 \makenoidxglossaries 
-\loadglsentries{./etc/acronym}
+\GlsXtrLoadResources[src={./etc/acronym}]
 % \glsaddall
-
+%Change Legends
+\usepackage{caption}
+\captionsetup{
+    labelfont=bf,
+    skip=4pt
+}
 % \usepackage[hyphens]{url} 	% URL's schöner formatieren
 % \usepackage[pdftex,a4paper,breaklinks,bookmarksnumbered]{hyperref}  % Hyperlinks im PDF-Dokument
 %\usepackage{pdfpages} 		% Einfügen von PDF-Dateien
@@ -89,8 +94,6 @@
 \frontmatter
 \include{./intro/titel} 
 
-% Erklärung (Arbeit selbstständig verfasst)
-\include{./intro/erklaerung}  
 
 % ---------------------------------------------------------------
 % % Glossar
@@ -123,7 +126,7 @@
 \printnoidxglossary[type=\acronymtype, title=List of Acronyms]
 
 
-\input{./sections/1-Einleitung}
+\input{./sections/1-Biological_Introduction}
 \input{./sections/2-Second}
 \input{./sections/3-Third}
 \input{./sections/4-Fourth}
@@ -138,6 +141,7 @@
 % ---------------------------------------------------------------
 % Quellenverzeichnisse
 \bibliographystyle{plainnat}
+\typeout{}
 \bibliography{literature}
 
 % ---------------------------------------------------------------
@@ -152,4 +156,9 @@
 \appendix
 %\includepdf[pages=-,fitpaper=true,addtotoc={1,section,0,Diagramm: Vergabe,fig:Vergabedia}]{Pfad-zu-einem-pdf-dokument.pdf}
 % ---------------------------------------------------------------
+
+% Erklärung (Arbeit selbstständig verfasst)
+\newpage
+\include{./intro/erklaerung}  
+
 \end{document}

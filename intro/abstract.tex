@@ -11,14 +11,33 @@
 \end{center}
 \vspace*{1cm}
 % -----------------------------------------------------
-\noindent Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Während der Entwicklung des murinen Neokortex am embryonalen Tag (E) 14.5 ist bereits eine kortikale Schichtung etabliert, wobei neuronale Progenitorzellen apikal lokalisiert sind, während neu entstandene Neuronen zur basalen Oberfläche migrieren. 
+Diese unterschiedlichen räumlichen Lokalisationen setzen die Zellen vermutlich verschiedenen Umgebungsbedingungen  aus, welche den mitochondrialen Stoffwechsel während der embryonalen Neurogenese beeinflussen. Um diese metabolischen Anpassungen 
+zu untersuchen, integrierten wir E14.5-Maus-Single-Cell-RNA-Sequenzierungsdaten aus dem Vorderhirn 
+in das mitochondriale Genome-Scale-Metabolic-Model MitoMammal \citep{CHAPMANMitoMAMMALGenomeScale2025}, um 
+zelltyp-spezifische metabolische Netzwerke zu generieren. 
+\newline
+
+Da die Sauerstoffverfügbarkeit den mitochondrialen Stoffwechsel maßgeblich beeinflusst, 
+etablierten wir zunächst physiologisch relevante Sauerstoffrestriktionen für jede Zelltypklasse.
+Mithilfe eines E-Flux-basierten Ansatzes identifizierten wir Plateaus der Komplex-V-Aktivität der mitochondrialen Atmungskette bei steigender Sauerstoffaufnahme und kombinierten diese Ergebnisse mit Literaturdaten, um zelltypspezifische Sauerstoffrestriktionen zu definieren. Bemerkenswerterweise zeigten Vorgängerpopulationen eine zunehmende Komplex-V-Aktivität mit steigender Sauerstoffverfügbarkeit, was darauf hindeutet, dass diese Zellen metabolisch bereits auf oxidative Phosphorylierung vorbereitet sind.
+\newline 
+
+Anschließend verwendeten wir einen gewichteten iMAT-Ansatz, der neben hoch exprimierten Genen auch moderat exprimierte Reaktionen berücksichtigt, um reduzierte, kontextspezifische metabolische Modelle zu erzeugen. Mittels Subsampling-Analysen konnten wir zeigen, dass weighted iMAT robuste Lösungen liefert und die Identifikation robuster Kernreaktionen über verschiedene Zelltypen hinweg ermöglicht. Insgesamt etabliert dieser Ansatz umweltabhängig eingeschränkte metabolische Modelle für die embryonale Neurogenese und schafft eine Grundlage zur Untersuchung metabolischer Anpassungen während der kortikalen Entwicklung. 
 
 % -----------------------------------------------------
 % Englische Zusammenfassung
+\newpage
 \vspace*{1cm}
 \begin{center}
     \textbf{Abstract}
 \end{center}
 \vspace*{1cm}
 % -----------------------------------------------------
-\noindent Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+During mouse neocortical development at embryonic day (E) 14.5, cortical layering is already established, with neural progenitor cells localized apically while newly generated neurons migrate toward the basal surface. These distinct spatial localizations likely expose cells to different microenvironmental conditions that influence mitochondrial metabolism during embryonic neurogenesis. To investigate these metabolic adaptations, we integrated E14.5 mouse single-cell RNA sequencing data from the forebrain into the MitoMammal \citep{CHAPMANMitoMAMMALGenomeScale2025} mitochondrial genome-scale metabolic model to generate cell type–specific metabolic networks.
+\newline
+
+Because oxygen availability strongly influences mitochondrial metabolism, we first established physiologically relevant oxygen constraints for each cell type class. Using an E-Flux–based approach, we identified mitochondrial Complex V activity plateaus across increasing oxygen uptake levels and combined these results with literature-derived information to define cell type–specific oxygen constraints. Notably, progenitor populations displayed increasing Complex V activity with oxygen availability, suggesting that these cells are metabolically prepared for oxidative phosphorylation. 
+\newline
+
+We then applied a weighted iMAT framework, which in addition to highly expressed genes also rewards moderately expressed reactions, to derive reduced context-specific metabolic models. Through subsampling analyses, we demonstrated that weighted iMAT generates robust solutions and enables the identification of robust core reactions across cell types. Altogether, this framework establishes environmentally constrained metabolic models for embryonic neurogenesis and provides a basis for studying metabolic adaptations during cortical development. 
