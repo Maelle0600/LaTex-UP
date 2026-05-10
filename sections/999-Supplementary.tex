@@ -1,0 +1,170 @@
+\chapter{Appendix}
+\label{chap:supp}
+
+
+\begin{table}[H]
+    \centering
+    \caption{\textbf{Overview of genes and associated reactions used for log2fold change across cell types.}
+    All these genes were used to plot a heatmap of log2fold change of OXPHOS and glycolysis genes.}
+    \label{tab:all_log2}
+    \begin{tabular}{cll}
+    \multicolumn{2}{c}{\textbf{Pathway}}                                                                                          & \multicolumn{1}{c}{\textbf{Associated Genes}}                                                                                                                                                                                                                                                                                                                                                                                        \\ \hline
+    \multicolumn{3}{c}{\textbf{OXPHOS}}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  \\ \hline
+    \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}NADH: ubiquinone \\ oxidoreductase (CI)\end{tabular}}                           & \begin{tabular}[c]{@{}l@{}}Ndufb5, Ndufa7, Ndufa4, Ndufc1,\\ Ndufa10, Ndufa4l2, Ndufv3, Ndufa3,\\ Ndufb6, Ndufs7, Ndufs8, Ndufv2,\\ Ndufs3, Ndufs2, Ndufv1, Ndufs1,\\ Mt-Nd1, Mt-Nd2, Mt-Nd3, Mt-Nd4,\\ Mt-Nd4l, Mt-Nd5, Mt-Nd6, Ndufs6,\\ Ndufa12, Ndufs4, Ndufa9, Ndufab1,\\ Ndufa2, Ndufb3, Ndufa5, Ndufa6,\\ Ndufa11, Ndufb11, Ndufs5, Ndufb4,\\ Ndufa13, Ndufb7, Ndufa8, Ndufb9,\\ Ndufb10, Ndufb8, Ndufc2, Ndufb2\end{tabular} \\ \hline
+    \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Succinate dehydrogenase \\ (CII)\end{tabular}}                                  & Sdha, Sdhb ,Sdhc                                                                                                                                                                                                                                                                                                                                                                                                                     \\ \hline
+    \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Ubiquinol-cytochrome c oxidoreductase \\ (CIII)\end{tabular}}                   & \begin{tabular}[c]{@{}l@{}}Uqcrc1, Uqcr11, Uqcr10,\\ Ttc19, Mt-Cytb, Cycs1,Cycs,\\ Uqcrfs1, Uqcrb, Uqcrh, Uqcrc2\end{tabular}                                                                                                                                                                                                                                                                                                        \\ \hline
+    \multicolumn{2}{c}{Cytochrome c oxidase (CIV)}                                                                                & \begin{tabular}[c]{@{}l@{}}Uqcrc1, Uqcr11, Uqcr10, \\ Ttc19, Mt-Cytb, Cyc1, Cycs, \\ Uqcrfs1, Uqcrb, Uqcrh, Uqcrc2\end{tabular}                                                                                                                                                                                                                                                                                                      \\ \hline
+    \multicolumn{2}{c}{ATP synthase (CV)}                                                                                         & Mt-atp6, Mt-atp8                                                                                                                                                                                                                                                                                                                                                                                                                     \\ \hline
+    \multicolumn{3}{c}{\textbf{Glycolysis}}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              \\ \hline
+    \multicolumn{2}{c}{Hexokinase 1}                                                                                              & Hk3, Hk2, Gck, Hk1                                                                                                                                                                                                                                                                                                                                                                                                                   \\ \hline
+    \multicolumn{2}{c}{\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Phosphoglucose isomerase\\ Phosphofructokinase-1\end{tabular}}} & \multirow{2}{*}{Gpi1, Pfkm}                                                                                                                                                                                                                                                                                                                                                                                                          \\
+    \multicolumn{2}{c}{}                                                                                                          &                                                                                                                                                                                                                                                                                                                                                                                                                                      \\ \hline
+    \multicolumn{2}{c}{Fructose-bisphosphate aldolase}                                                                            & Aldoa, Aldoc                                                                                                                                                                                                                                                                                                                                                                                                                         \\ \hline
+    \multicolumn{2}{c}{Triosephosphate isomerase}                                                                                 & Tpi1                                                                                                                                                                                                                                                                                                                                                                                                                                 \\ \hline
+    \multicolumn{2}{c}{Glyceraldehyde-3-phosphate dehydrogenase}                                                                  & Gapdh                                                                                                                                                                                                                                                                                                                                                                                                                                \\ \hline
+    \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Phosphoglycerate kinase\\ Phosphoglycerate mutase\end{tabular}}                 & Pgk1, Pgam1, Pgam2                                                                                                                                                                                                                                                                                                                                                                                                                   \\ \hline
+    \multicolumn{2}{c}{Enolase}                                                                                                   & Eno3, Eno1, Eno2                                                                                                                                                                                                                                                                                                                                                                                                                     \\ \hline
+    \multicolumn{2}{c}{Pyruvate kinase}                                                                                           & Pkm                                                                                                                                                                                                                                                                                                                                                                                                                                  \\ \hline
+    \multicolumn{2}{c}{L-lactate dehydrogenase}                                                                                   & Ldhb                                                                                                                                                                                                                                                                                                                                                                                                                                
+    \end{tabular}
+\end{table}
+
+% active reaction of subsample distribution
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{distribution_activeR_subModels.png}
+    \caption{\textbf{ Distribution of active reaction from subsampled datasets.} 
+    Barplot shows distribution of active reactions and how many reactions are active across the submodels. Based on this, we set the threshold at 80\%, meaning that we will use the reactions that can be found in 80\% of the submodels and use intersections to define robust core reactions. 
+    }
+    \label{fig:core_distribution}
+\end{figure}
+
+% Pearson correlation
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{mitoMammal_pearson_corr_heatmap.png}
+    \caption{\textbf{Pearson Correlation of MitoMammal gene expression across cell types.} 
+        Pearson correlation heatmap illustrating the similarity of Mitomammal gene expression profiles across 9 cell types and their replicates. The analysis includes 363 genes and was performed on log-normalized data.
+        AP: Apical progenitor, BP: Basal progenitor, DL: Deep-layer, UL: Upper layer
+    }
+    \label{fig:mitoPearson}
+\end{figure}
+
+
+%E-Flux results 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{EFlux_barPlots_others.png}
+    \caption{\textbf{Contribution of ATP-generating pathways under varying oxygen conditions.} 
+            Bar plot showing the relative contribution of cytosolic ATP-generating reactions inferred by E-Flux for cell types 
+            AP cycling 2, AP cycling 3, BP cycling, DLN, and ULN differentiating. Blue bars represent glycolytic reactions 
+            (PGK: phosphoglycerate kinase,  and PYK: pyruvate kinase). Orange bars are mitochondrial reactions including SUCOAS: succinyl-CoA synthetase, and Complex V/ ATP synthase, in dark orange, which reflects OXPHOS activity.
+    }
+    \label{fig:EFlux_all}
+\end{figure}
+
+%FVA Range oxygen conditions EFlux
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{EFlux_FVA_oxLevel.png}
+    \caption{\textbf{Flux Variability Analysis (FVA) of ATP-Producing Reactions in Context-Specific Models using E-Flux.} 
+        FVA results for cell-type-specific models that were retrieved from E-Flux. All cell types are constrained by cell-type-class specific oxygen uptake values, reflecting physiological conditions: Apical progenitors/APs: (3), Basal progenitors/BPs (8), Deep-layer neurons/DLNs (12), and Upper-layer neurons (18) mmol $gDW^{-1}h^{-1}$.
+        FVA was performed at 100\% of the optimal objective value (ATP hydrolysis) for  reactions PGK (phosphoglycerate kinase), PYK (pyruvate kinase), CV\_mitoMap (Complex V), SUCOASm (mitochondrial succinyl-CoA synthetase).}
+    \label{fig:FVA_range}
+\end{figure}
+
+%subsampling_pca
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{PCA_subsamples.png}
+    \caption{\textbf{Principal component Analysis (PC1 vs PC2) of subsampled pseudobulk data.} 
+        For each cell type, 10 subsamples per experiment and biological replicate were generated, by randomly sampling 90\% of the original scRNA-seq data without replacement, resulting in a total of 50 subsamples per cell type.}
+    \label{fig:subsampling_pca}
+\end{figure}
+
+% Table, Core reaction unique profile 
+\begin{table}[H]
+    \centering
+    \caption{\textbf{Overview of all unique cell-type-specific reactions identified using weighted iMAT.}
+    Table of cell-type specific unique reactions and their subsystem. Information was retrieved from Mitomammal GEM. We only list reactions that have subsystem}
+    \label{tab:core_rct}
+    \begin{tabular}{ll}
+    \textbf{Reaction ID}                                                                                                    & \textbf{Subsystem}                                                                                              \\ \hline
+    \multicolumn{2}{c}{DLN 2}                                                                                                                                                                                                                 \\ \hline
+    OAAt\_mitoMap                                                                                                           & Ocaloacetate export                                                                                             \\
+    GlyCt                                                                                                                   & glycerol exchange                                                                                               \\
+    \begin{tabular}[c]{@{}l@{}}GLUDxi \\ (Gluatmate dehydrogenase)\end{tabular}                                             & \begin{tabular}[c]{@{}l@{}}Glutamate degradation/synthesis\\ - cytosolic\end{tabular}                           \\ \hline
+    \multicolumn{2}{c}{ULN differentiating}                                                                                                                                                                                                   \\ \hline
+    \begin{tabular}[c]{@{}l@{}}ACAT2\\ ACACt2mB\_mitoMap\end{tabular}                                                       & \begin{tabular}[c]{@{}l@{}}cytosolic Acetoacetate import,\\ Mitochondrial acetoacetate transporter\end{tabular} \\
+    MCPST                                                                                                                   & Cysteine degradation II                                                                                         \\ \hline
+    \multicolumn{2}{c}{BP}                                                                                                                                                                                                                    \\ \hline
+    \begin{tabular}[c]{@{}l@{}}Trans-Dec-2-Enoyl Coenzyme A \\ reductase (r0745),\\ r0638, r0791, r0735, r0633\end{tabular} & Fatty acid elongation in mitochondria                                                                           \\
+    r0060                                                                                                                   & Serine degradation                                                                                              \\
+    r1451, r1450                                                                                                            & fatty acid metabolism                                                                                           \\ \hline
+    \multicolumn{2}{c}{DLN}                                                                                                                                                                                                                   \\ \hline
+    GLYK                                                                                                                    & Cardiolipin synthesis                                                                                          
+    \end{tabular}
+\end{table}
+
+
+
+% Sensitivity PLOTS
+\section{Sensitivity Analysis}
+\label{sec:sens}
+A total of 1530 weighted-iMAT models  were generated by simultaneously varying the flux activation threshold $\epsilon$, lower and upper quantile. The three parameters were validated based on the number of active core reactions in the model. 
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_AP_cycling.png}
+    \caption{\textbf{Sensitivity Analysis of AP cycling.}}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_AP_cycling_2.png}
+    \caption{\textbf{Sensitivity Analysis of AP cycling 2.}}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_AP_cycling_3.png}
+    \caption{\textbf{Sensitivity Analysis of AP cycling 3.}}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_BP_cycling.png}
+    \caption{\textbf{Sensitivity Analysis of BP cycling.}}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_BP.png}
+    \caption{\textbf{Sensitivity Analysis of BP.}}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_DL_neurons.png}
+    \caption{\textbf{Sensitivity Analysis of DLN.}}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_DL_neurons_2.png}
+    \caption{\textbf{Sensitivity Analysis of DLN 2.}}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_UL_differentiating.png}
+    \caption{\textbf{Sensitivity Analysis of ULN differentiating.}}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+    \includegraphics[width=\textwidth]{sensPlot_UL_migrating.png}
+    \caption{\textbf{Sensitivity Analysis of ULN migrating.}}
+\end{figure}
+
+

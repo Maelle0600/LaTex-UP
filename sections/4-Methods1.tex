@@ -1,0 +1,92 @@
+\chapter{Computational Approaches}
+\label{chap:methods_comp}
+\section{E-Flux Implementation}
+
+In our implementation of E-Flux, we define the function $f$ (Eq.~\ref{eq:Eflux}) as a combination of scaled gene expression values integrated with GPR rule logic.
+\\
+
+First, gene expression values x are normalized using the 95th percentile as the scaling factor. Any scaled values greater than 1, are set to 1. Next, the effective gene  expression $x_i^E$ per reaction $i$ is computed by applying the respective associated GPR rules. For reactions catalyzed by protein complexes (AND logic), the minimum expression value among the associated genes is used. For reactions that can be catalyzed by several enzymes (OR logic), the sum of expression values is used.
+\\
+
+Finally, all effective expression values per reaction are scaled by a constant factor ($c=1000$) and applied
+to adjust the reaction’s flux bounds, as previously described (Eq.~\ref{eq:Eflux_bounds}).
+
+\section{Weighted iMAT}
+One of the key strengths of iMAT is that it does not rely on prior knowledge of a cell type specific objective function. This is of particular interest in our project, where we model transitioning cells, a context in which defining an objective function, even just for mitochondrial metabolism, is challenging. 
+\\
+
+iMAT’s objective function is designed to maximize consistency with gene expression data. There are two ways to increase it. One, when reactions in $R_H$ carry an absolute flux greater than
+$\epsilon$, and two, when reactions in $R_L$  carry no flux. However, reactions classified as moderately active ($R_M$) do not contribute to the objective function. 
+\\
+
+\textit{Shlomi et al.} developed a method that relies on uniform presence or absence of gene expression across datasets to classify reaction activity. While this approach may be suited for bulk-data, our project relies on pseudo-bulk data, allowing us to further refine reaction activity classes. 
+\\
+
+We therefore adapted iMAT into a method we refer to as weighted iMAT. Below, we discuss the key adaptations:
+\\
+
+We begin with a quantile-based classification approach, where the user selects a lower and upper quantile to define the thresholds for gene expression classification.
+These thresholds are computed and applied to the input pseudo-bulk data, which was min-max normalized a priori.  
+\\
+
+Given the upper and lower quantile, lower ($t_L$) and upper ($t_U$) thresholds are defined.
+Genes with  expression above $t_H$ are classified as highly expressed and assigned a value of 1, genes with expression  below $t_L$ are classified as lowly expressed and assigned -1, and genes with expression between these thresholds are classified as moderately expressed and assigned 0.
+\\
+
+Next, the gene classes are mapped to reactions to classify their activity. Here, we used the same min/max logic as \textit{Shlomi et al.}
+\\
+
+In addition, to this more nuanced classification, we introduced a weight variable $w$ that allows reactions in $R_M$ to contribute to the objective function. The objective function and inequality constraints are then updated as follows (with changes to the original iMAT implementation highlighted in red):
+
+%weighted iMAT
+
+\begin{equation}
+    \label{eq:weighted_iMAT}
+    \begin{aligned}
+    \max_{v,\,y} \;&
+        \sum_{i \in R_H \textcolor{red}{\cup R_M}} \textcolor{red}{w_i} (y_i^{+} + y_i^{-})
+        + \sum_{i \in R_L} y_i^{+}
+    \\[10pt]
+    \text{s.t.}& \\ 
+    S v &= 0
+    \\[6pt]
+    v_{\min,i} &\le v_i \le v_{\max,i},
+    \qquad \forall i
+    \\[6pt]
+    v_i + y_i^{+}(v_{\min,i} - \epsilon)
+        &\ge v_{\min,i},
+        \qquad \forall i \in R_H \textcolor{red}{ \cup R_M}
+    \\[6pt]
+    v_i + y_i^{-}(v_{\max,i} + \epsilon)
+        &\le v_{\max,i},
+        \qquad \forall i \in R_H \textcolor{red}{\cup R_M} \cup R_{\mathrm{rev}}
+    \\[6pt]
+    v_{\min,i}(1 - y_i^{+})
+        \le v_i &\le
+        v_{\max,i}(1 - y_i^{+}),
+        \qquad \forall i \in R_L
+    \\[6pt]
+    y_i^{+},\, y_i^{-} &\in \{0,1\},
+    \qquad \forall i
+    \\[6pt]
+    \textcolor{red}{w_i} &=
+    \begin{cases}
+        (x_i^E - t_H) + 1, & i \in R_H, \\[6pt]
+        \dfrac{x_i^E - t_L}{t_H - t_L}, & i \in R_M.
+    \end{cases}
+\end{aligned}
+\end{equation}
+
+Eq.~\ref{eq:weighted_iMAT} shows the calculation of the weight variable $w$. Here, $x_i^E$  denotes the leading gene expression value for reaction $i$, determined by evaluating the GPR using the same modified boolean logic as for the gene-to-reaction classification.
+
+All other equations are explained in the iMAT section.
+\\
+
+We implemented weighted iMAT in Python using the PuLP package and the coin-or branch and cut solver \gls{CBC} from PuLP.
+Throughout the project, we used a lower quantile of 40, an upper quantile of 70, and $\epsilon$ of 1.
+\\
+
+The weighted iMAT implementation is available on GitHub:\\
+https://github.com/Maelle0600/NeuroMetabo
+% -----------------------------------------------------
+\endinput 

@@ -34,14 +34,28 @@
 
 \usepackage[acronym,toc,nonumberlist,nopostdot]{glossaries-extra}
 \makenoidxglossaries 
-\GlsXtrLoadResources[src={./etc/acronym}]
+\loadglsentries{./etc/acronym.tex}
+% \GlsXtrLoadResources[src={./etc/acronym}]
 % \glsaddall
+
+% for tables 
+\usepackage{multirow}
+
 %Change Legends
 \usepackage{caption}
-\captionsetup{
+\captionsetup[figure]{
     labelfont=bf,
-    skip=4pt
+    skip=2pt,
+    justification=raggedright,
+    singlelinecheck=false
 }
+\captionsetup[table]{
+  skip=20pt,
+  labelfont = bf,
+  singlelinecheck=false,
+  justification=raggedright,
+  }
+\usepackage{float}
 % \usepackage[hyphens]{url} 	% URL's schöner formatieren
 % \usepackage[pdftex,a4paper,breaklinks,bookmarksnumbered]{hyperref}  % Hyperlinks im PDF-Dokument
 %\usepackage{pdfpages} 		% Einfügen von PDF-Dateien
@@ -70,6 +84,8 @@
 % ---------------------------------------------------------------
 
 % Verschiedene Schriften
+
+
 \usepackage{%
   lmodern, % A) Latin Modern Fonts sind die Nachfolger von Computer
             % Modern, den LaTeX-Standardfonts
@@ -83,7 +99,7 @@
 % Glossar-Anpassungen
 % Den Punkt am Ende jeder Beschreibung deaktivieren
 \renewcommand*{\glspostdescription}{}
-
+\usepackage{xcolor}
 % ---------------------------------------------------------------
 
 % Hier startet der Inhalt
@@ -126,13 +142,20 @@
 \printnoidxglossary[type=\acronymtype, title=List of Acronyms]
 
 
-\input{./sections/1-Biological_Introduction}
-\input{./sections/2-Second}
-\input{./sections/3-Third}
-\input{./sections/4-Fourth}
-\input{./sections/5-Fifth}
-\input{./sections/6-Sixth}
-\input{./sections/7-Seventh}
+\input{./sections/1-Bio_Intro}
+\input{./sections/1-Bio_Intro2}
+\input{./sections/1-Bio_Intro3}
+
+\input{./sections/2-Algo_intro}
+\input{./sections/3-aim_of_thesis}
+\input{./sections/4-Methods1}
+\input{./sections/5-Data}
+\input{./sections/6-StatAn}
+\input{./sections/7-Results1_dataExp}
+\input{./sections/7-Results2_oxygen}
+\input{./sections/7-Results3_RobustnessA.tex}
+\input{./sections/8-Discussion}
+\input{./sections/8-Discussion2}
 % ---------------------------------------------------------------
 % % Schlussteil - Römische Seitennummerierung
 % \backmatter
@@ -154,6 +177,7 @@
 % ---------------------------------------------------------------
 % Anhang
 \appendix
+\input{./sections/999-Supplementary}
 %\includepdf[pages=-,fitpaper=true,addtotoc={1,section,0,Diagramm: Vergabe,fig:Vergabedia}]{Pfad-zu-einem-pdf-dokument.pdf}
 % ---------------------------------------------------------------
 

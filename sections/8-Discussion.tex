@@ -1,0 +1,38 @@
+\chapter{Discussion}
+In this study, we developed a first approach to constrain environmental conditions by identifying OXPHOS plateau behavior using E-Flux under varying oxygen levels. Based on this, we retrieved context-specific GEMs using the weighted iMAT approach, which enabled us to identify cell type-specific robust core reactions, providing first insights into the distinct metabolic phenotypes of developing neocortical cell types. A particular focus was placed on the metabolic shift from glycolysis toward OXPHOS, a hallmark of neurogenesis. Our results highlight oxygen availability as a central limiting factor in this transition, suggesting that oxygen constraints play an important role in shaping metabolic rewiring during neurogenesis. 
+
+\section{Methodological Considerations and Limitations}
+
+\subsection{Scope and Representation of the GEM used}
+We extracted context-specific GEMs using E-flux, as well as  the weighted iMAT method applied to a core MitoMammal model, representing mitochondrial metabolism. This approach allowed us to capture cell-type-specific metabolic signatures by integrating transcriptomic data with metabolic network constraints. 
+\\
+
+HoweverAdditionally, mitochondrial activity is influenced by crosstalk with other organelles, such as the endoplasmic reticulum and Golgi apparatus, which is not captured in our models. 
+\\
+
+On the other hand, smaller models like MitoMammal may offer advantages. They can improve prediction accuracy by reducing noise and complexity, are computationally more efficient, and may better capture the unique metabolic signature of specific cell types. Furthermore, they tend to be more internally consistent and better curated, with fewer missing GPR associations, better annotations of reactions, metabolites, and compartments, as well as containing fewer dead-end metabolites and blocked reactions.  
+\\
+
+As a future step, it might be interesting to compare results on bioenergetics and metabolism by using a genome-scale model that captures the entire cellular metabolism.
+
+\subsection{Integration of Transcriptomic Data and Constraints}
+The integration of transcriptomic data in our model assumes that mRNA levels correlate with metabolic activity. However, gene expression at the mRNA level does not necessarily correlate with protein abundance, for example due to post-transcriptional control mechanisms \citep{liuDependencyCellularProtein2016}.
+This discrepancy can affect the reliability of our predictions. 
+\\
+
+Additionally, environmental and biological uncertainties affect our models. The extracellular composition, including nutrient availability, is often unknown, and even if it were defined, it would not necessarily reflect the metabolite concentrations accessible to mitochondria within cells. Moreover, translating extracellular conditions into mitochondrial uptake rates requires assumptions about transport processes, compartmentalization, and regulation that are difficult to constrain experimentally. These uncertainties in general limit the precision of metabolic flux predictions of cells in a multicellular organism. 
+\\
+
+\subsection{Influence of Parameter Selection}
+Model characteristics, such as size, content, and predictions, are strongly shaped by the choice of data integration method and model extraction parameters used \citep{opdamSystematicEvaluationMethods2017}.
+Given these dependencies, it is important to explore alternative solutions to assess the consistency and robustness of the results. To this end, we performed sensitivity and robustness analyses to evaluate the reliability of our models. Nevertheless, findings derived from constraint-based approaches, should be interpreted with caution and, where possible, validated with additional experimental evidence. 
+
+\subsection{Limitations of Robustness and Sensitivity Analysis}
+The robustness of our subsampling-based weighted iMAT networks was assessed using Jaccard similarity, which measures the overlap of reactions between a pair of subsamples. However, this metric does not account for reaction directionality, a critical aspect of metabolic function within metabolic models. To address this limitation, we performed FBA on the networks. Yet, even with FBA, we only verified flux through a subset of reactions, rather than the entire network. This means that while we assessed the presence or absence of reactions, we did not fully capture the directionality or magnitude of fluxes across all possible metabolic pathways. 
+\\
+
+Moreover, evaluating the quality of a metabolic model is inherently challenging, particularly when verification data are unavailable, as no single universal metric exists to fully assess metabolic models. In our sensitivity analysis, we used the relative amount of core reactions included within a model as an evaluation criterion. However, the extraction of these core reactions is already biased, as they were retrieved using weighted iMAT with a predefined parameter set and under oxygen-constrained conditions, which rely on assumptions about the metabolic environment. 
+\\
+
+Additionally, while plots may show that low epsilon values, as well as low upper and lower quantiles, cover a high percentage of core reactions, this does not necessarily mean that the retrieved models are biologically plausible. Using a combination of these parameters may simply increase the weighted iMAT objective by including as many reactions as possible, rather than reflecting true biological relevance. 
+

@@ -1,0 +1,112 @@
+\section{Subsampling with weighted iMAT exhibit robust Fluxes}
+Due to the existence of alternative optimal solutions in constraint-based approaches, we assessed the robustness of flux distributions in weighted iMAT-derived GEMs. This was achieved by applying the weighted iMAT pipeline in conjunction with a subsampling strategy (see \textit{Robustness Analysis of weighted iMAT Networks} for details).
+\\
+
+A PCA plot (PC1 vs. PC2) of the subsampling-based weighted iMAT models did not reveal consistent clustering of samples according to their originating experiments or replicates (Appendix Fig~\ref{fig:subsampling_pca}).
+This lack of clustering is expected and desirable, as the objective was to perturb the input data and assess the stability of the retrieved submodels.
+\\
+
+Corresponding variability is further reflected in the Jaccard similarity of the weighted iMAT submodels (Fig~\ref{fig:jacc_heatmap}). 
+In particular, AP cycling and AP cycling 2 exhibited lower similarity scores, with samples from different experiments forming distinct clusters along PC1 and showing relatively low Jaccard indices when compared to submodels from other experiments. In contrast, all other cell types maintained a Jaccard similarity index of at least 0.5, indicating robust consistency across subsamples. 
+
+%Jaccard Indx
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{heatmap_Jacc_iMAT.png}
+    \caption{\textbf{Jaccard Similarity of Subsampling-Based Weighted iMAT Networks.}The heatmap shows the Jaccard Similarity Index between submodels generated from 50 subsamples. The weighted iMAT pipeline was applied to each subsample, and the similarity between all pairs of submodels was computed.
+    }
+    \label{fig:jacc_heatmap}
+\end{figure}
+
+Additionally, we performed FBA using ATP hydrolysis as the objective function on all subsampling-based weighted iMAT networks to evaluate the stability of metabolic fluxes. The violin plots of flux values for OXPHOS and glycolysis reactions (Fig~\ref{fig:violin}) reveal tight distributions with minimal spread across subsamples. This consistency confirms that, for the reactions analyzed, the metabolic flux predictions remain robust to variations in input gene expression data.
+
+
+%Violin
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Robustness_PB_90_violinPlot.png}
+    \caption{\textbf{ Violin plots of flux distributions for mitochondrial and glycolytic reactions.} Flux values are shown for all subsamples using weighted iMAT, followed by FBA with ATP hydrolysis as the objective function for the reactions \textbf{(A)} PGK (phosphoglycerate kinase), \textbf{(B)} PYK (pyruvate kinase) \textbf{(C)} CV\_mitoMap (Complex V) (D) SUCOASm (mitochondrial succinyl-CoA synthetase)
+    }
+    \label{fig:violin}
+\end{figure}
+
+\section{Weighted iMAT is changing with Parameter Selection}
+Beside the  robustness analysis, we performed a sensitivity analysis to evaluate model quality under varying weighted iMAT parameters settings. Corresponding sensitivity plots for all cell types are provided in Appendix Section~\ref{sec:sens}.
+As expected, increasing the $\epsilon$ parameter resulted in reduced coverage of core reactions in the generated GEMs, as higher activation thresholds prevented the inclusion of reactions with lower activity levels. Consequently, lower $\epsilon$
+values generally yielded higher core reaction coverage. We further observed that increasing the lower quantile threshold negatively affected core reaction coverage. Under these conditions, the weighted iMAT objective is optimized by assigning a larger fraction of reactions to the inactive state, thereby reducing the number of retained core reactions within the resulting models.
+\\
+
+Notably, an $\epsilon$ value of 1.0 substantially altered the sensitivity profiles across all cell types. In these cases, lower upper-quantile settings were no longer able to recover more than 60\% of core reactions.
+
+\section{Weighted iMAT reduces the Size of Submodels}
+Applying weighted iMAT with cell-type-specific oxygen uptake constraints produced metabolic network backbones closely aligned with high and moderate gene expression data. To enable direct comparison of reaction flux values across integration methods, the weighted iMAT approach was followed by FBA, optimizing for the same objective function as E-Flux (ATP hydrolysis). 
+\\
+
+As expected, E-Flux produces submodels with more active reactions compared to weighted iMAT. However, BP and DLN 2 were exceptions, where weighted iMAT exhibited a higher count of active reactions 
+(Fig~\ref{fig:stat} A). Among the submodels, AP cycling stands out as the largest, with 187 active reactions in E-Flux and 125 in weighted iMAT. In contrast, ULN migrating represents the smallest submodel,  with 90 and 50 active reactions in E-Flux and weighted iMAT, respectively.
+\\
+
+To further assess the qualitative similarity between both integration methods, we analyzed the agreement in reaction activity status across all submodels. On average, at least 60\% of reactions showed matching activity status between the two methods. In other words, reactions were either inactive in both submodels or active with flux in the same direction. 
+\\
+
+However, the maximum activity mismatch, where reactions are active in one model but shut down in the other, reached 37\% in AP cycling (Fig~\ref{fig:stat} B).
+This high level of disagreement reflects the nature of weighted iMAT, which shuts down reactions when gene expression levels are insufficient. Consequently, this also explains the differences in submodel size, as reactions active in E-Flux may be deactivated in weighted iMAT.
+\\
+
+More notably, we detect some but relatively low (below 2\% across all submodels) directional mismatch, where reactions run forward in one model but in reverse in the other. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Flux_agreement_EFlux_vs_iMAT.png}
+    \caption{\textbf{ Comparison of reaction activities between E-Flux and weighted iMAT submodels.} Flux distributions were obtained by applying Flux Balance Analysis (FBA) to weighted iMAT submodels using the same objective functions as in E-Flux. \textbf{(A)} Total number of active reactions (reactions carrying an absolute flux greater than $1e^{-6}$) per cell type and submodel. \textbf{(B)} Comparison of agreement, activity mismatch, and directionality mismatch of reactions between E-Flux models and weighted iMAT submodels. Agreement is defined as reactions that are both active/inactive and run in the same direction in both models, 
+        activity mismatch corresponds to reactions that are active in one model but inactive in the other. Direction mismatch refers to reactions that run forward in one model, but reverse in the other.
+    }
+    \label{fig:stat}
+\end{figure}
+
+\section{Cell-type specific Core Reaction Profiles}
+To identify cell-type-specific metabolic signatures, we retrieved context-specific GEMs by applying weighted iMAT with cell-type-specific oxygen uptake constraints. Using the core reaction definition (active in $\ge$ 80\% of subsampled submodels; see \textit{Defining Core Reactions}), 
+we compared the similarity of core reactions across cell types. Fig~\ref{fig:jacc_sim} illustrates 
+the Jaccard similarity between cell types, revealing that AP cycling subtypes exhibit lower similarity to other cell types, while all cell types of the same group cluster together.
+
+%JACCARD PLOT
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Jaccad_robustReactions.png}
+    \caption{\textbf{Jaccard Similarity of Core Reactions Across Cell Types.} The heatmap shows the Jaccard similarity index for core reactions (defined as active in $\ge$80\% of subsampled GEMs;  see \textit{Defining Core Reactions}) between all pairs of cell types.
+    }
+    \label{fig:jacc_sim}
+\end{figure}
+
+We characterized unique cell-type-specific reactions, as well as reactions shared across progenitor and neuronal cell types (Fig~\ref{fig:Upset}). A total of 88 core reactions were shared across all cell types, likely representing essential  mitochondrial metabolic processes common to all neural and progenitor cells. 
+\\
+
+Several cell types, namely DLN 2, ULN differentiating, and BP exhibited exclusive metabolic reactions not shared with any other cell type. Notably, these were also the cell types with the highest number of reactions within their context-specific GEMs.
+\\
+
+DLN 2 had 5 unique reactions, including exchange reactions of OAA and glycerol (EX\_oaa\_e, EX\_glyc\_e, OAAt\_mitoMap, GLYCt), as well as a glutamate dehydrogenase (\gls{GLUDxi}), which  converts glutamate to $\alpha$KG, using NA$D^+$ as its cofactor . 
+\\
+
+ULN differentiating cells exhibited 4 unique reactions, such as mitochondrial acetoacetate import (ACACt2), 3-mercaptopyruvate sulfurtransferase (MCPST), an enzyme that detoxifies cyanide by converting it to thiocyanate.  
+\\
+
+BP had 11 unique reactions, primarily related to fatty acid (FA) metabolism, such as multiple acyl-CoA dehydrogenases (r1448, r1450, r1451), that reduce ubiquinone to ubiquinol, feeding electrons into the respiratory chain and reactions (r0638, r0633, and r0791, r0735) that all utilize NADPH as electron donor to reduce double bonds of fatty acids, with the ultimate aim to obtain stable saturated fatty acyl-CoA. In addition, a total of three serine-metabolism-related reactions 
+were identified, such as a serine deamination reaction (r0060), an irreversible reaction breaking down serine into pyruvate and ammonium, and serine exchange reactions (r2526, EX\_ser\_L\_e).
+\\
+
+We further identified reactions shared between specific cell type groups, suggesting functional metabolic commonalities. A total of 7 reactions were unique to all three APs and both DLNs, all related to amino acid metabolism. For example, glutamine transport (GLNtm) and alanine exchange reactions ( EX\_ala\_L\_e, ALAt2r, r14349), as well as a alanine aminotransferase (r0081), a reversible cytosolic reaction that transfers an amino group from alanine to $\alpha$KG, producing glutamate. In addition, mitochondrial glutaminase (GLUNm), which irreversibly converts glutamine to glutamate, was also shared across these cell types.
+\\
+
+A distinct set of reactions was shared between BP and both ULNs, forming a linear pathway for ketone body metabolism. The import of ß-hydroxybutyrate (BHB) into mitochondria (BHBt, BHBtmB\_mitoMap), the reversible conversion of BHB to acetoacetate (BDHm), using NAD+, the transfer of CoA from succinyl-CoA to acetoacetate (OCOAT1m), forming acetyl-CoA, and finally a thiolysis reaction of acetoacetyl-CoA (ACAT1rm), splitting it into two molecules of acetyl-CoA that can then enter TCA.
+\\
+
+An overview of the reactions in the described sets is provided in Appendix Tab~\ref{tab:core_rct}.
+
+%Upset plot
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Upsetplot_robustRcts.png}
+    \caption{\textbf{Overlap of core Reactions Across Cell Types.} The Upset plot visualized the intersection of core reactions (active in $\ge$ 80\% of subsampled GEMs) among cell types. The horizontal bar plot on the left indicates the total number of core reactions within each cell type. The vertical bar plot on top shows the number of reactions shared across the connected cell type combinations below. Connected dots represent intersecting sets, with the height of the vertical bars reflecting the size of each intersection.
+    }
+    \label{fig:Upset}
+\end{figure}

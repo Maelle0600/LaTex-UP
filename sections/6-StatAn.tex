@@ -1,0 +1,87 @@
+\chapter{Statistical Analysis}
+\label{chap:statAn}
+
+\section{Uniform Manifold Approximation and Projection (UMAP)}
+To visualize and explore the transcriptional relationship among cells, we employed uniform manifold approximation and projection (\gls{UMAP}), a nonlinear dimensionality reduction technique. UMAP constructs a low-dimensional embedding that reflects the topological relationship between data points to preserve the global and local structure of high-dimensional scRNA-seq data.
+\\
+
+For this analysis, the UMAP embedding was precomputed by collaborators using the Seurat package  (version 5.4.0) in R. Briefly, the embedding was generated using the provided Seurat object. Prior to UMAP computation, principal component analysis (\gls{PCA})
+was performed, and the first 30 principal components were used as input for UMAP. A k-nearest neighbor graph (with k=20) was constructed, followed by clustering and visualization in two dimensions. Default UMAP parameters were applied throughout the process. 
+
+
+\section{Pearson Correlation}
+We assessed linear transcriptional similarity between single cell expression profiles by computing Pearson correlation coefficients on log-normalized gene counts and visualizing the resulting similarity matrix as a clustered heatmap. 
+\\
+
+The log-transformation was performed in R using Seurat’s NormalizeData function. Pearson correlation coefficients were then computed in Python using the pandas.corr method. The Pearson correlation coefficient ($r_{xy}$) between two expression profiles X and Y is defined as the covariance (Cov) of X and Y, normalized by the product of their standard deviation $\sigma$:
+
+\begin{equation}
+    \label{eq:pearson}
+    r_{xy} = \frac{\text{Cov}(X,Y)}{\sigma_X \sigma_Y}
+\end{equation}
+
+$r_{xy}$ can range from -1 to 1, where a value of 0 indicates no linear association, positive values reflect similar expression profiles, and negative values indicate an inverse linear relationship.
+
+
+\section{Spearman Correlation}
+Another approach to assess correlations between single cell expression profiles is Spearman’s rank correlation coefficient ($\rho_{xy}$). Given the non-normal, and sparse nature of scRNA-seq data, we additionally used Spearman correlation to evaluate transcriptional similarity. Unlike Pearson correlation, Spearman does not assume linearity or normality and is robust to outliers. 
+\\
+
+Spearman correlation assesses the monotonic relationship between two expression profiles by computing the Pearson correlation of their rank-transformed values. Like for the Pearson correlation coefficient, Spearman correlation is applied to log-normalized data (see section \textit{Pearson Correlation} for details) and computed in Python using the pandas.corr method. Thus, $\rho_{xy}$ is calculated
+analogously to $r_{xy}$ (see Eq.~\ref{eq:pearson}), but using the ranks of the expression values,
+rather than their raw values. 
+\\
+
+Like the Pearson coefficient, the Spearman coefficient ranges from -1 to 1, where -1 or 1 describe a perfect monotonic relationship, and 0 indicates no associations.
+
+\section{Differential Expression Analysis}
+Differential expression analysis (\gls{DEA}) was performed in R (version 4.1.2) using the DeSeq2 package \citep{love2014differential} . As input, we used the pseudobulk data generated in step 2 of the \textit{Generating Pseudobulk Profiles} section, comprising 10 pseudobulk profiles per cell type (two profiles for each of the five biological replicates).
+\\
+
+To construct a common reference, pseudobulk profiles were grouped according to their split (group 1 or group 2), and for each group, the mean expression across all cell types was computed. This resulted in two reference profiles, representing the average transcriptional state of all cell types of each group. Differential expression was assessed by comparing each cell type pseudobulk profile against these mean references, with DeSeq2 providing log2 fold
+changes  for all genes. We focused our analysis on genes associated with key metabolic pathways, found in OXPHOS and glycolysis (see Appendix Tab~\ref{tab:all_log2})
+
+
+\section{Jaccard Similarity}
+To evaluate the similarity between retrieved subnetworks, we represented each network as a set of reactions and computed the pairwise Jaccard Similarity index. The Jaccard index between two subnetworks A and B is defined as: 
+\begin{equation}
+    J(A,B) = \frac{\left|r_A \cap r_B\right|}{\left|r_A \cup r_B\right|}
+\end{equation}
+
+where $r_A$ and $r_B$ are the sets of active reactions in subnetworks A and B, respectively. When the two sets $r_A$ and $r_B$ are identical, $J(A,B)=1$. On the other hand,
+when the two sets have no elements in common, $J(A,B)=0$.
+
+
+\section{Robustness Analysis of weighted iMAT Networks}
+To ensure that the subnetworks retrieved by weighted iMAT are representative and not artifacts of the expression data, we performed a robustness analysis to characterize the stability of the results. 
+
+\subsection{Generating subsampled Datasets}
+We first generated 50 subsampled datasets for each cell type by randomly sampling 90\% of the scRNA-seq data without replacement (i.e., 10 subsamples per independent experiment and biological replicate). Pseudobulk profiles were then constructed from these subsampled datasets using the same approach described in
+\textit{Generating Pseudobulk Profiles}.
+
+\subsection{Applying weighted iMAT to subsampled Datasets}
+Weighted iMAT was applied to the subsampled datasets, resulting in 450 GEMs across all cell types, with reactions carrying zero flux in the output are excluded. These models were used in two complementary analyses. First, they were analyzed without additional oxygen constraints to assess the intrinsic robustness of the reconstructed GEMs. Secondly, cell-type-specific oxygen uptake constraints (APs: 3, BPs: 8, DLN: 12, ULN: 18 $\text{mmol} gDW^{-1} h^{-1}$)
+were imposed, generating context-specific subsampled models. This second dataset was used to identify robust core reactions for each cell type.
+
+
+\subsection{Defining Core Reactions}
+The subsampling approach allowed us to identify a core set of robust core reactions shared within each cell type. A reaction was defined as robust if it was active in at least 80\%
+of the submodels (i.e., present in $\ge40$ of the 50 submodels per cell type). The distribution of the number of active reactions across models is shown in Appendix Fig.~\ref{fig:core_distribution}.
+
+
+\section{Sensitivity Analysis of weighted iMAT Networks}
+Weighted iMAT requires the user to specify three parameters that influence the retrieved network: $\epsilon$,
+the flux activation threshold, as well as the lower, and upper quantile, defining the thresholds for gene expression classification. 
+\\
+
+In order to assess how variations in the chosen-parameters affect the subnetworks, we performed a sensitivity analysis by systematically perturbing all three variables. For this analysis, we used the pseudobulk scRNA-seq data for each cell type, generated as described in \textit{Generating Pseudobulk Profiles}
+and without applying additional constraints. We tested five $\epsilon$ values (from $10^{-3}$ to $10^{1}$) and seven lower quantile values (linearly spaced between 1st  and 75th quantile) paired with seven upper quantile values (linearly spaced between 25th and 99th). All parameter combinations were considered, with the constraint that the lower quantile must be smaller than the upper quantile. This resulted in a total of 170 parameter combinations tested per cell type. Due to the computational demand, this analysis was executed using 16 parallel processes on a Linux-based high-performance computing server. 
+\\
+
+To evaluate the quality of each model, we quantified the overlap with the cell-type specific core reactions identified in our robustness analysis (see \textit{Robustness Analysis of Weighted iMAT Networks}), assuming that models with higher overlap are more likely to capture biologically relevant metabolic features. 
+
+
+
+
+% -----------------------------------------------------
+\endinput 

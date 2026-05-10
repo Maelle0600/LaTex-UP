@@ -1,0 +1,210 @@
+\chapter{Algorithmic Introduction }
+\label{chap:two}
+
+\section{Genome-Scale Metabolic Models Capture Metabolic Networks}
+As Bordbar et al. stated, ‘understanding the genotype–phenotype relationship is at the core of the life sciences’ \citep{bordbarConstraintbasedModelsPredict2014}.
+Yet, despite the advent of modern high-throughput technologies, translating measured data into valuable insights remains a significant challenge. While established statistical tools are routinely and effectively used to identify correlative relationships, they alone cannot provide functional insights into the physiological state of a cell. 
+\\
+
+To bridge this gap, constraint-based reconstruction and analysis (\gls{COBRA}), applied to genome-scale metabolic models (\glspl{GEM}), 
+offers a powerful solution. It allows researchers to explore the feasible metabolic states of a system, test hypotheses (e.g., gene knockouts or environmental perturbations), and integrate omics data to contextualize metabolic predictions.
+\\
+
+GEMs encapsulate all prior knowledge about the reactions occurring in a biological system, including substrates, products, stoichiometry, and reaction directionality, curated from annotated genomes and experimental data. In these models, reactions are connected to the genes via gene-protein-reaction (\gls{GPR}) rules, which are boolean logic descriptions of associations between genes and reactions. For instance, if a protein complex is required to catalyze a reaction, the genes encoding its subunits are linked by an AND operator . Conversely, if multiple isoenzymes can catalyze the same reaction, the corresponding genes are connected by an OR operator.
+\\
+
+For example, a GPR  rule with genes $x$ of the form [[$x_1$ AND $x_2$ AND $x_3$] OR $x_4$ OR $x_5$] indicates that the reaction can be catalyzed by three distinct isoenzymes. One isoenzyme is a protein complex ([$x_1$ AND $x_2$ AND $x_3$]),  whereas the other two isoenzymes are individual enzymes encoded by [$x_4$ OR $x_5$].
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{metabolicModeling.png}
+    \caption{\textbf{Workflow for metabolic modeling using genome-scale metabolic models (GEM).} First, a genome-scale metabolic model is reconstructed from annotated genomic data and literature sources. The GEM is then translated into a mathematical framework in the form of a stoichiometric matrix. Additional constraints can subsequently be applied to this representation before the prediction of metabolic fluxes through each reaction in the model. 
+    Predictions are computed using linear programming. Ideally, predicted fluxes are validated experimentally. Figure created with BioRender.com.
+    }
+    \label{fig:metabolicModeling}
+\end{figure}
+
+
+Mathematically, GEMS can be represented as a stoichiometric matrix $S$. Within $S$ each row represents a metabolite, whereas columns correspond to reactions. Each entry represents the stoichiometric coefficient of a given metabolite in a specific reaction. Negative values indicate metabolite consumption, whereas positive values indicate its production. The magnitude of each entry reflects the stoichiometric ratio in which the metabolite participates (see Fig~\ref{fig:metabolicModeling}).
+\\
+
+While GEMs are widely applied to study whole-cell metabolism in contexts such as metabolic engineering, human metabolism, and biomedicine, the present work focuses specifically on mitochondrial metabolism, restricting the analysis to a single organelle rather than the entire cellular system. 
+
+\subsection{Simulating metabolic Fluxes}
+Given the stoichiometric matrix $S$ and a flux vector $v$, where each entry $v_j$ represents the rate of reaction $j$ in the system.
+The change in concentration of a metabolite over time in a closed system can be mathematically expressed as follow:
+
+\begin{equation*}
+    \frac{dm}{dt} = Sv
+\end{equation*}
+
+with $\frac{dm}{dt}$ representing how the concentration of each metabolite $m$ changes over time $t$.  In most metabolic modeling approaches, the system is assumed to be at steady state, meaning that metabolite concentrations do not change over time. This simplifies the equation to: 
+
+\begin{equation}
+    Sv = 0
+    \label{eq:steadyState}
+\end{equation}
+
+Solving the system of linear equations (Eq~\ref{eq:steadyState}),  yields possible flux distributions $v$. However, because the number of reactions typically exceeds the number of metabolites, the system is underdetermined. As a result, it does not have a unique solution but instead defines a feasible solution space with infinitely many possible flux distributions that all satisfy the steady state constraints. 
+\\
+
+Beyond  the steady-state assumption, additional constraints can be imposed on the system to refine model predictions. These constraints are most commonly applied to lower and upper bounds on reaction fluxes ($v_{min}$, $v_{max}$),  which serve to enforce reaction directionality or limit the maximum capacity of specific reactions. By integrating experimental data or prior knowledge, such as nutrient availability, gene expression levels, or environmental conditions, reaction bounds are adjusted to further constrain the solution space to physiologically relevant flux distributions.
+
+\subsection{Flux Balance Analysis}
+Flux balance analysis (\gls{FBA}) is  a widely used optimization framework that selects a particular flux distribution from the feasible solution space by maximizing a defined objective function \citep{kauffmanAdvancesFluxBalance2003,savinellOptimalSelectionMetabolic1992}. 
+This is formulated as a linear programming (\gls{LP}) problem, in which the objective is commonly chosen as the biomass reaction. The biomass reaction is a synthetic reaction that aggregates metabolic precursors, such as amino acids, lipids, ATP, and nucleotides, into biomass components, weighted according to their contribution to 1g of cellular dry weight. As such, it serves as a proxy for cellular growth. 
+\\
+
+FBA is formulated as the following optimization problem: 
+
+% FBA Formulation
+\begin{equation}
+    \label{eq:FBA}
+    \begin{aligned}
+    \max_{v} \quad & c^T v \\
+    &\text{s.t.} \\
+    \quad & Sv = 0 \\
+    & v_{\min,i} \le v_i \le v_{\max,i}
+    \end{aligned}
+\end{equation}
+
+
+where c is a vector of coefficients that defines a linear objective function, $S$ represents the stoichiometric matrix, and $v$ the flux vector.
+\\
+
+Because the underlying optimization problem is convex, FBA guarantees the identification of an optimal objective value. However, this does not imply uniqueness of the corresponding flux distribution. As discussed previously, multiple distinct flux states can yield the same optimal objective value, meaning that alternative optimal solutions may exist within the feasible space. 
+
+\subsection{E-Flux}
+E-Flux \citep{colijnInterpretingExpressionData2009} builds on the principle of FBA by incorporating gene expression data to refine the reaction flux range. This is done by adjusting the maximum reaction rate $v_{max,i}$  for each reaction i using a function of the form
+\\
+
+\begin{equation}
+    v_{max,i} = f(\{x_{g,i}\} g \in G_i)
+    \label{eq:Eflux}
+\end{equation}
+
+where $G_i$ represents the set of genes associated with reaction $i$ and $x_{g,i}$ is the expression level of gene $g$ for reaction $i$.
+\\
+
+The computed $v_{max,i}$ is then used to constrain the flux bound of the reactions. For irreversible reactions, only the upper bound is adjusted, such that 
+
+\begin{equation*}
+    0 \le v_i \le v_{max,i}
+\end{equation*}
+while for reversible reactions, both the upper and lower bounds are scaled proportionally, resulting in: 
+
+\begin{equation}
+    -v_{max,i} \le v_i \le v_{max_i}
+    \label{eq:Eflux_bounds}
+\end{equation}
+
+\subsection{iMAT}
+While methods like E-Flux quantitatively integrate gene expression data into GEMs, other approaches focus on qualitative integration. One such method is the integrative Metabolic Analysis Toolbox (iMAT) \citep{SHLOMINetworkbasedPredictionHuman2008},
+which uses gene expression data to predict the likelihood of a reaction to be active. Solving iMAT returns a flux distribution, from which users can extract a context-specific metabolic network of active reactions. 
+\\
+
+iMAT operates on the assumption that reactions associated with highly expressed genes are more likely to be active, while those linked to lowly expressed genes are more likely to be inactive. Using the provided gene expression data from a given biological sample, iMAT generates a context-specific metabolic model by maximizing the number of active reactions associated with highly expressed genes and minimizing the number of active reactions associated with lowly expressed genes.
+\\
+
+\textit{Shlomi et al.} first used this approach to predict human tissue-specific metabolism. To do so, they integrated two complementary data sources: one providing tissue-specific gene-expression patterns based on bulk microarray mRNA expression data from GeneNotes, and another providing protein-abundance information from the Human Protein Reference Database (HPRD). 
+\\
+For each gene in a given tissue, they assigned one of three expression states: highly expressed, lowly expressed, or moderately expressed, represented by the values $1$, $-1$, and $0$, respectively. 
+A gene was classified as highly expressed if it was consistently annotated as expressed across all GeneNotes expression patterns and in HPRD. Conversely, a gene was classified as lowly expressed if it was consistently annotated as nonexpressed across all datasets. 
+Genes showing inconsistent or conflicting evidence between datasets were classified as moderately expressed.  
+\\
+
+Next, the expression states of genes are mapped to the respective reactions they catalyze using GPR rules. Here, the logical operators are adapted as follows: protein complexes with  GPR AND logic are replaced by the minimum of the gene expression values. For example, if a reaction $i$
+requires genes $x_1$ AND $x_2$,  the effective gene expression $x_i^E$ becomes min($x_1$, $x_2$). 
+OR logics on the other hand, are replaced by the maximum of the gene expression values to represent the reaction’s activity state.
+\\
+
+After mapping the gene expression to reactions, two key subsets of reactions are identified: highly active reactions ($R_H$), including reactions whose effective gene expression value $x_i^E$ is 1,
+and lowly expressed reactions ($R_L$) with an effective gene expression of -1. Reactions with a $x_i^E$ of 0, do not belong
+to a reaction class and are treated as having uncertain or intermediate activity.
+\\
+
+This approach is then integrated into a constraint-based modeling framework, formulated as a Mixed-Integer Linear Programming (\gls{MILP}) problem as follow: 
+
+%iMAT Formulation
+\begin{equation}
+    \label{eq:iMAT}
+    \begin{aligned}
+        \max_{v,\,y} \;& 
+        \sum_{i \in R_H} (y_i^{+} + y_i^{-})
+        + \sum_{i \in R_L} y_i^{+} \\[10pt]
+    \text{s.t.} \\&
+    \begin{aligned}
+        S v &= 0 \\[6pt]
+        v_{\min,i} &\;\le\; v_i \;\le\; v_{\max,i},
+        \qquad \forall i
+        \\[0.7em]
+            v_i + y_i^{+}(v_{\min,i}-\epsilon) &\ge v_{\min,i},
+            \qquad i \in R_H \\[6pt]
+            v_i + y_i^{-}(v_{\max,i}+\epsilon) &\le v_{\max,i},
+            \qquad i \in R_H \cup R_{\mathrm{rev}} \\[6pt]
+            v_{\min,i}(1 - y_i^{+}) \le v_i &\le
+            v_{\max,i}(1 - y_i^{+}), \qquad i \in R_L \\[6pt]
+            y_i^{+},\, y_i^{-} &\in \{0,1\}
+    \end{aligned}
+    \end{aligned}
+\end{equation}
+
+where $v$ is the flux vector, $S$ the stoichiometric matrix, $\epsilon$ 
+an user-defined threshold for minimum reaction activity, $v_{min}$ and $v_{max}$ 
+are the lower and upper bounds of reaction $i$, $y_i^+$ and $y_i^-$ the binary variables indicating forward and reverse activity, respectively. 
+\\
+The typical steady-state assumption is applied, followed by the flux bound constraints. Reactions that are neither in $R_H$ or $R_L$ retain their original flux bounds.
+\\
+
+For reactions in $R_H$, two constraints ensure that if a reaction $i$ is active (i.e., $y_i^+$=1 or $y_i^-$=1), its flux must 
+be at least $\epsilon$ in the forward or reverse direction, respectively. If both of the binary variables are 0, the reaction retains its original bounds. 
+\\
+
+For reactions in $R_L$, the last constrain enforces that if $y_i^+$=1, the reaction is effectively shut down by constraining the flux to zero. If
+$y_i^+$=0, the reaction retains its original bounds.
+\\
+
+Finally, the objective function aims to maximize the number of active reactions in $R_H$ and minimize the number of active reactions in $R_L$. 
+
+\subsection{Flux Variability Analysis (FVA)}
+As discussed before, metabolic modeling often does not yield a unique solution to the system of equations. Instead, it defines a solution space in which every flux distribution satisfies the given constraints. Therefore, the challenge lies in identifying the biologically relevant solutions, those that align with experimental measurements, prior knowledge or other specific modeling objectives.
+\\
+
+Multiple approaches have been developed to analyse the solution space of a system. One of the most widely used and straightforward approaches is flux variability analysis (\gls{FVA}) \citep{mahadevanEffectsAlternateOptimal2003}.
+FVA estimates the range of possible flux values for each reaction at the optimal solution of the system. It achieves this by solving two linear programming problems per reaction:
+
+%FVA equation
+
+\begin{equation}
+    \label{eq:FVA}
+    \begin{aligned}
+        \max_{v}\; v_i \quad & \text{and} \quad \min_{v}\; v_i \\
+        &\text{s.t.} \\
+        Sv &= 0 \\
+        v_{\min,i} \le &v_i \le v_{\max,i}\\
+        z&=z^*
+    \end{aligned}
+\end{equation}
+
+where $z$ is the objective function and its optimal solution $z^*$.
+\\
+
+Beside FVA being able to identify alternative optima, compare different conditions, determine robustness of metabolic models, and identify reactions that are coupled to the objective, it has one notable limitation. Since it analyzes reactions individually, one at a time, it cannot capture correlations or dependencies between different reactions. 
+
+
+\subsection{Limitations of FBA Assumptions}
+Although FBA approaches have proven useful in many cases \citep{ozcanReconstructedMetabolicNetwork2016,SHLOMINetworkbasedPredictionHuman2008,mardinogluDefiningHumanAdipose2014,pagliariniSilicoModelingLiver2016},  it comes with limitations that determine its predictions. 
+\\
+
+First, the predicted flux distribution in FBA is highly sensitive to several factors, such as the choice of objective function, the quality of metabolic reconstruction itself, and the methodology used to solve the LP problem. Secondly, FBA does not account for regulation, such as post-transcriptional or allosteric regulation. Since FBA relies solely on stoichiometry and steady-state assumptions, it misses the dynamic and regulatory layers that shape real metabolic behavior.
+\\
+
+One of the impactful limitations stem from uncertainties in defining the biomass reaction.The composition of biomass is often uncertain and can vary significantly depending on growth rate, nutrient availability, and temperature \citep{nookaewGenomescaleMetabolicModel2008,duarteReconstructionValidationSaccharomyces2004,cotnerTemperatureAffectsStoichiometry2006,carnicerMacromolecularElementalComposition2009}.
+Unfortunately, limited experimental data and cellular heterogeneity make it difficult to define a universally accurate biomass function. 
+\\
+
+Additionally, there is ongoing debate regarding the validity of assuming a single optimal objective function, particularly in eukaryotic systems and even more so in multicellular (metazoan) organisms. In multicellular systems, cellular objectives are highly context dependent, varying across cell types and even within the same cell type over time, making it difficult to justify the use of a single, fixed metabolic objective.
+\\
+
+Another source of uncertainty that limits FBA’s performance, is the definition of metabolite uptake rates. To accurately model metabolic behavior, the uptake rates of metabolites from the environment must be specified. While data on environmental composition can be helpful, it is often difficult to obtain them in \textit{in vivo} experiments.
+Even in \textit{in vitro} settings, this information is limited by the lack of transparency from media manufacturers.

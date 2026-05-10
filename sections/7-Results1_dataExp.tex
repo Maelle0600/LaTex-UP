@@ -1,0 +1,66 @@
+\chapter{Results}
+\label{chap:res}
+
+\section{Data Exploration}
+\subsection{Transcriptional heterogeneity across Cell Types}
+
+UMAP embedding of sc-RNAseq data (784 genes) revealed 9 distinct clusters, each corresponding to one of the annotated cell types (Fig~\ref{fig:umap}).
+The separation of clusters indicates that cell types occupy discrete transcriptional states, which remain discernible despite variability within clusters introduced by the 5 independent experiments. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{umap_plot.png}
+    \caption{\textbf{UMAP revealed clustering structure explained by cell type.} Clustering of the 9 cell types on two-dimensional embedded coordinates by UMAP of single-cell 
+    transcriptomic data. Colors show annotated cell types.
+    }
+    \label{fig:umap}
+\end{figure}
+
+
+\subsection{Metabolic Gene Expression}
+To investigate whether the transcriptional separation observed in global expression profiles persists when focusing specifically on mitochondrial metabolic genes, we performed correlation analysis using the 363 genes matched to the MitoMammal gene set. 
+\\
+
+Both, Pearson (see Appendix Fig~\ref{fig:mitoPearson}) and Spearman (Fig~\ref{fig:mitoSpearman}) correlation analyses revealed that using only this gene subset did not recapitulate the clear clustering observed in the UMAP generated from global expression profiles, with Spearman correlation coefficients ranging from -0.1177  to 0.8874. This is expected, as mitochondrial genes are not the primary drivers of cell-type identity. Many mitochondria-related genes are essential for basic cellular functions, and their expression profiles are therefore conserved across cell types. 
+\\
+
+Nevertheless, we observed a clear outlier, AP cycling 3, which showed weaker intra- and inter-cell type correlations in both Spearman and Pearson correlation analyses. This suggests either biological heterogeneity (e.g., distinct metabolic subtypes within AP cycling 3) or technical variability introduced during independent experiments.
+\\
+
+
+Despite the variability observed in Spearman correlations, DLN samples maintain relatively high Pearson correlations both within and across cell types. This may indicate functional specialization within the DLN subset, where different DLNs prioritize distinct metabolic pathways. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{mitoMammal_spearman_corr_heatmap.png}
+    \caption{\textbf{Spearman correlation of MitoMammal gene expression across cell types.} Spearman correlation heatmap illustrating the similarity of Mitomammal gene expression profiles across 9 cell types and their replicates. The analysis includes 363 genes and was performed on log-normalized data.
+        AP: Apical progenitor, BP: Basal progenitor, DL: Deep-layer, UL: Upper layer
+     }
+    \label{fig:mitoSpearman}
+\end{figure}
+
+\subsection{Pathway-specific Analysis: OXPHOS vs. Glycolysis}
+While the Pearson and Spearman correlation analysis revealed some extent of heterogeneity in metabolic gene expression, we sought to determine whether these differences translated into functional distinctions in key pathways, such as OXPHOS and glycolysis. To address this, we analyzed the log2 fold changes of genes associated with these pathways across cell types
+(see Appendix Tab~\ref{tab:all_log2} for the list of genes),  comparing each cell type’s pseudobulk profiles to a mean reference profile.
+\\
+
+We visualized log2 fold changes of OXPHOS and glycolytic genes across cell types (Fig~\ref{fig:oxphos_glyco}).
+While individual genes often did not reach statistical significance (padj > 0.05), a consistent trend of upregulation was observed in AP cycling 3 for most OXPHOS-associated genes (see Fig~\ref{fig:oxphos_glyco} B),  a profile more typically associated with neurons. This findings aligns with our earlier correlation analysis, where AP cycling 3 consistently appeared as an outlier, suggesting a distinct transcriptional state for this subgroup.
+\\
+
+For other cell types the log2 fold changes did not reveal statistically significant or consistent patterns, highlighting the limitations of gene expression data in capturing the actual metabolic state of a cell. Given the lack of clear transcriptional signatures, complementary approaches are needed to more fully characterize cellular metabolism .This is where metabolic modeling becomes particularly valuable.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{GLY_OXPHOS_heatmaps.png}
+    \caption{\textbf{ Log2 fold changes of OXPHOS and glycolytic genes across cell types.}The heatmaps display the log2 fold changes of genes associated with glycolysis \textbf{(A)} and OXPHOS \textbf{(B)} for each cell type relative to the mean reference profile. Colors represent the magnitude and direction of fold changes. 
+     }
+    \label{fig:oxphos_glyco}
+\end{figure}
+
+
+
+
+% -----------------------------------------------------
+\endinput 

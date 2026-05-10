@@ -1,0 +1,79 @@
+\section{E-Flux reveals Oxygen as a limiting Factor for Progenitor Cell Types}
+To investigate the metabolic states of different cell types, with a focus on bioenergetics, so OXPHOS and glycolysis usage, we used E-Flux to infer metabolic activity across cell types. Given that oxygen availability is crucial for OXPHOS but very likely limited in the VZ and SVZ, we hypothesized that progenitor cells experience more restricted oxygen access
+compared to neurons. To explore this, we simulated metabolic profiles under varying oxygen import fluxes, as described in the Methods \textit{(E-Flux Implementation)}.
+\\
+
+We applied oxygen import ranges from 1 to 19 mmol $gDW^{-1} h^{-1}$. 
+Fig~\ref{fig:eFlux_res} shows the E-Flux results for representative cell types (AP cycling, BP, DLN 2 and ULN migrating), depicting the percentual contribution of cytosolic ATP-generating reactions. Glycolytic reactions (PGK and PYK) are shown in shades of blue, while mitochondrial reactions (Complex V and succinyl–CoA synthetase/SUCOAS)  are shown in orange. 
+\\
+
+As expected, increasing oxygen levels led to a decrease in glycolytic contribution to cytosolic ATP production and a corresponding increase in CV activity
+(see Fig\ref{fig:eFlux_res}; see Appendix Fig~\ref{fig:EFlux_all} for all cell types). CV, represented in dark orange, reflects the contribution of OXPHOS to cytosolic ATP production.
+\\
+
+Notably, mitochondrial activity in progenitor cells remained higher than in neurons even under low oxygen conditions, primarily due to the activity of succinyl–CoA synthetase
+(Fig~\ref{fig:eFlux_res} A, B), suggesting that the TCA cycle plays a crucial role even in low oxygen conditions. Conversely, glycolytic activity was consistently higher in all neuronal cell types compared to progenitors, contributing at least 50\% to cytosolic ATP production when oxygen availability is restricted
+(Fig~\ref{fig:eFlux_res} C, D).
+\\
+
+In addition, the detection of  CV activity in progenitor cells, even under low oxygen uptake rates, suggests that the ETC machinery is fully transcribed and functional in progenitors but may be restricted by oxygen availability. This is in line with the observation that gene expression of OXPHOS and glycolysis genes do not significantly differ depending on the developmental stage and suggests that oxygen is one crucial limiting factor in initiating the transition from AP progenitors to fully developed deep or upper layer neurons.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{EFlux_barPlots_representatives.png}
+    \caption{\textbf{Contribution of ATP-generating pathways under varying oxygen conditions.} Bar plot showing the relative contribution of cytosolic ATP-generating reactions inferred by E-Flux for four representative cell types (for the other bar plots see Appendix Fig~\ref{fig:EFlux_all}).
+    Blue bars represent glycolytic reactions (PGK: phosphoglycerate kinase,  and PYK: pyruvate kinase). Orange bars are mitochondrial reactions including SUCOAS: succinyl-CoA synthetase, and Complex V/ ATP synthase, in dark orange, which reflects OXPHOS activity.
+    }
+    \label{fig:eFlux_res}
+\end{figure}
+
+
+\section{Cell-type specific OXPHOS Capacities}
+To further characterize OXPHOS activity, we examined the absolute flux through CV as a function of increasing oxygen import  levels. As expected, we observed a linear 
+increase in CV flux with oxygen availability (Fig~\ref{fig:eFlux_fva} A), particularly at lower oxygen levels. This trend aligns with the objective function of maximizing ATP hydrolysis as OXPHOS remains the most efficient pathway for ATP production when oxygen is available.
+\\
+
+Interestingly, we noted distinct OXPHOS capacities among the cell types. Apart from AP cycling 3, all progenitor cell types reach a plateau in CV flux at lower oxygen levels (e.g., $\sim$ 12 mmol $gDW^{-1} h^{-1}$ for BP cycling and $\sim$ 14 mmol $gDW^{-1} h^{-1}$ for AP cyclng, 
+AP cycling 2, and BP) than neurons. In addition to reaching the plateau earlier, their CV flux is also reduced, for example
+not exceeding 100 mmol $gDW^{-1} h^{-1}$ for BP cycling. 
+In contrast, neuronal cell types (e.g., DLN) continue to increase CV flux to higher plateaus, reaching up to 140 mmol $gDW^{-1} h^{-1}$.
+\\
+
+Once again, AP cycling 3 stands out as an outlier, as CV flux does not exhibit a clear plateau within the tested oxygen availability range, suggesting that ATP production via CV remains primarily limited by oxygen availability rather than additional constraints in this cell type.
+\\
+
+To further explore the metabolic flexibility of ATP-producing pathways under the oxygen conditions where an OXPHOS plateau was first observed, we performed FVA on all active reactions capable of contributing to the objective function by synthesizing ATP (Fig~\ref{fig:eFlux_fva} B). Under these conditions and with the objective function maintained at its optimal value, we observed unique flux solutions for PYK and CV, indicating that these reactions are inflexible for achieving optimal ATP hydrolysis.
+\\
+
+In contrast, PGK and SUCOASm exhibited wide flux ranges, particularly in progenitor cells. Notably, SUCOASm in most progenitors can even operate in reverse direction, effectively consuming mitochondrial ATP rather than producing it. This suggests that, under the respective oxygen conditions, SUCOAS may not always contribute to net ATP production but could instead be relevant for other pathways such as ketone metabolism and heme synthesis. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{EFlux_and_FVA.png}
+    \caption{\textbf{Oxygen constraints and flexibility in ATP production across cell types.} \textbf{(A)} Absolute flux through CV of the ETC as a function of oxygen uptake across all nine cell types.
+        \textbf{(B)} FVA on E-Flux cell-type-specific models at 100\% of the optimal objective value for reactions PGK (phosphoglycerate kinase), PYK (pyruvate kinase), CV\_mitoMap (Complex V), SUCOASm (mitochondrial succinyl-CoA synthetase), evaluated at the oxygen uptake rates, where plateau behavior was first observed for each cell type: AP cycling: (14), AP 
+        cycling 2: (15), AP cycling 3: (19), BP cycling: (12), BP: (14), DLN: (19), DLN 2: (16), ULN differentiating: (18), ULN migrating: (16) mmol $gDW^{-1}h^{-1}$.}
+    \label{fig:eFlux_FVA}
+\end{figure}
+
+\section{Physiological Oxygen Constraints for Cell-Type-Specific Modeling}
+To model physiological oxygen availability for each cell type, we assigned oxygen uptake constraints based on their anatomical localization within the developing neocortex and the known hypoxic gradients during fetal brain development. The fetal brain is considered normoxic at a $PO_2$ range of 1-6\%, compared to
+20\% in the adult brain.
+\\
+
+We translated physiological oxygen tensions into metabolic model constraints by defining 18 mmol $gDW^{-1} h^{-1}$ as the
+maximum oxygen uptake, corresponding to 6\% $PO_2$, the upper limit of normoxia in the fetal brain. This value was selected because, apart from AP cycling 3, all other cell types reached their maximum OXPHOS capacity (as indicated by the plateau in Fig~\ref{fig:eFlux_FVA} A) at or below this oxygen level. 
+\\
+
+Using this scaling, we assigned oxygen availability constraints to each cell type based on their localization within distinct brain layers:
+Since the VZ is the most hypoxic region of the developing neocortex, we constrained all APs oxygen uptake to 3 mmol $gDW^{-1} h^{-1}$.
+The SVZ is less hypoxic than the VZ, thus we assumed oxygen levels of $\sim$ 3 $PO_2$ and assigned all BPs an oxygen uptake constraint of 
+8 mmol $gDW^{-1} h^{-1}$. DLNs are located closer to the pial surface, where early vascularization begins, 
+resulting in higher oxygen availability, which we assumed to be around 4\% $PO_2$.
+Their oxygen uptake was constraint to 12 mmol $gDW^{-1} h^{-1}$. ULNs reside in the most oxygenated regions of the developing cortex.
+Therefore, we assigned them the maximum $PO_2$ of 6\% and modeled their oxygen uptake as 18 mmol $gDW^{-1} h^{-1}$.
+\\
+
+Applying FVA with the cell-type specific oxygen constraints, once again led to unique solutions for PGK and CV, while PYK and SUCOASm exhibited consistent wide flux ranges (see Appendix Fig~\ref{fig:FVA_range}).
+

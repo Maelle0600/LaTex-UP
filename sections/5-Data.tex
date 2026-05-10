@@ -1,0 +1,53 @@
+\chapter{Data}
+\label{chap:data}
+
+\section{Single-nuclei sequencing Data of the developing Neocortex}
+The murine scRNA-seq data used in this study was provided by collaborators from the Molecular Embryology group led by Prof. Tanja Vogel at the University of Freiburg, Germany. The dataset captures neurogenesis at E14.5 across multiple cell types, comprising scRNA-seq data for 27,304 genes. The collaborators included control scRNA-seq data from three independent experiments (Exp1, Exp2, Exp3), two of which had two technical replicates each. 
+\\
+
+Cell types were annotated by the collaborators, and the dataset includes the following populations, with additional details for the AP cycling subgroups: 
+
+\begin{table}[h]
+    \centering
+    \caption{\textbf{Overview of Data provided by Collaborators.} Including cell type annotations 
+        and cell numbers. AP: Apical progenitor, BP: Basal progenitor, DLN: Deep-layer neuron, ULN: Upper-layer neuron\\
+    }
+    \label{tab:data}
+    \begin{tabular}{ll}
+        \textbf{Cell Type}                       & \textbf{Number of Cells} \\ \hline
+        \multicolumn{1}{l|}{AP cycling}          & 2,397                    \\
+        \multicolumn{1}{l|}{AP cycling 2}        & 1,324                    \\
+        \multicolumn{1}{l|}{AP cycling 3}        & 821                      \\
+        \multicolumn{1}{l|}{BP cycling}          & 741                      \\
+        \multicolumn{1}{l|}{BP}                  & 2,676                    \\
+        \multicolumn{1}{l|}{DLN}                 & 2,842                    \\
+        \multicolumn{1}{l|}{DLN 2}               & 1,486                    \\
+        \multicolumn{1}{l|}{ULN differentiating} & 2,404                    \\
+        \multicolumn{1}{l|}{ULN migrating}       & 2,662                   
+    \end{tabular}
+\end{table}
+
+The dataset was preprocessed and cell types were annotated by our collaborators before being provided as a Seurat object.  While detailed information on the annotation process and specific preprocessing steps is not available, the dataset was used as provided for subsequent analyses. 
+
+\section{Generating Pseudobulk Profiles}
+Pseudobulk aggregation is necessary for metabolic modeling with scRNA-seq data, as it preserves cell-type specific metabolism, while reducing the noise and sparsity inherent in single-cell data. To account for variability across biological replicates, we computed one pseudobulk per cell type in R. Below, we describe the pipeline used to generate pseudobulk profiles for a single cell type. 
+\\
+
+\begin{enumerate}
+    \item For each of the five biological replicates, cells were randomly shuffled and split into two groups of approximately equal size, yielding a total of 10 groups per cell type.
+    \item Within each group, raw gene counts were first summed across all cells and then normalized by the number of cells in the respective profile, resulting in two pseudo-replicate expression profiles per biological replicate.
+    \item Finally, the mean expression across all pseudo-replicates was computed to obtain the final pseudobulk expression profile for the cell type.
+\end{enumerate}
+
+\section{MitoMammal as GEM}
+For metabolic modeling, we used MitoMammal \citep{CHAPMANMitoMAMMALGenomeScale2025}, a mitochondrial-focused GEM that includes relevant cytosolic reactions (see schematic in Fig.~\ref{fig:mitomammal}).
+MitoMammal comprise 560 reactions and 784 genes, with a predefined objective function of ATP hydrolysis.
+\\
+
+Since mitoMammal was originally developed for mouse cardiomyocytes and brown adipose tissue, we adapted specific reaction bounds to better reflect the neurological context: 
+Glucose import (reaction: GLCt1r) was limited to a maximum flux of 5 mmol $gDW^{-1} h^{-1}$, creatine and phosphocreatine import, previously disabled, were reopened with a flux bound of 0.05 mmol $gDW^{-1} h^{-1}$ (reactions: r0942 and r0942b\_mitoMap, respectively). To prevent futile cycling between the cytosolic and mitochondrial creatine-phosphocreatine reactions, 
+we constrained both the cytosolic (CKc) and mitochondrial (CK) creatine kinase reactions to operate only in the forward direction. Finally, we restricted the mitochondrial Formyl-TetrahydroFolate Ligase (FTHFLm) to operate only in the forward direction, 
+consistent with its usage in platforms such as BIGG \citep{schellenbergerBiGGBiochemicalGenetic2010} and human metabolic models like Recon3D \citep{brunkRecon3DEnablesThreedimensional2018}.
+
+% -----------------------------------------------------
+\endinput 
